@@ -1,0 +1,10 @@
+                                    NETDEVOPS resources:
+
+
+-useful resources and youtube channels:
+
+      - HashiCorp channel: https://www.youtube.com/@HashiCorp/search?query=infrastructure%20automation
+      
+      
+      
+
