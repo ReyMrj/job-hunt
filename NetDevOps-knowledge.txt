@@ -1,9 +1,63 @@
                                     NETDEVOPS knowledge:
                                     
 
--what's infrastructure automation to begin with?
+---what's  network infrastructure automation to begin with?
 
+we have two options mainly , the first one is when we only use a tool like consul like a "service discovery" with some modern  other tools that are "consul aware" , be it firewalls or loadbalancers or any sort of gateways like api gateway, routers ..etc. all of these are like medium pieces that work in the background when applications want to communicate with each other , lets say we have app a, app b , app c  and all of the apps query the consul .
 
+-u can think of consul as a "service discovery" or a "common registry" of all the differnet applications we have running.
+
+-so if we have diffrent apps A,B,C,D all of them register "implicitly" with consul , so we have  some sort of a "catalog" of what are the applications and where are they running
+
+-this first use case is called service discovery or service registry, it's like u have this bird's eye catalog of where all the apps are and what are they doing
+
+-so what this enables us to do is , when these services want to "talk to one another", they can "query" consul and use it as some sort of a "dynamic dictionary or directory" of all the different services.
+
+-consul is like the "dynamic linker" of the network.
+
+-so instead of app A "hard coding" the "ip address" of app B , it's "quering consul" and consul says great here is the ip to go talk to B or here is the way to get to c.
+
+-thats layer 1 in short .
+-but the reality in all networks is that it's not as simple as an "independent  applicatiions" just on a "flat network talking to one another"
+
+-in practice u have "different middleware" that exists between applications , for example if A wants to go talk to a databse , that database might have some sort of a firewall that sits behind it .or we might have traffic that needs to come in from the public internet for example an API gateway  and that API gateway is sending traffic to services C and D .or maybe a loadbalancer for app B as there are lots of services reaching it.
+
+-the common challenge that we end up having that often times , the changes to these services sit behind what we call a "ticketing mechanism"
+-how? so if im deploying a new instance of  A and that thing needs to be able to reach teh database often time i have to file a ticket for someone to "manually" update this firewall so i can get access to the database, or similarly if i launch a new instance of B someone has to manually update the load balancer... for scling service D up the same process with api gateway and so on..
+
+-so tehres some areas where consul can help us to this sort of infrastructure automation, if we talk abt more modern sophisticated solutions , modern api gates,loadbalancers,firewalls..etc now they are directly "consul aware"
+
+-so for example using an F5 big ip device as ur api gateway , it is consul aware, we can configure it to say C and D  are my updtream services in this case, im not going to provide a static set of ips , go and integrate query consul , and now if i scale up D i dont need to file a ticket to manually update the api gateway it automatically gets it by quering consul 
+-here we are treating consull as source of service discovery.
+-an ex of modern LB is NGNINX.
+-so far we know that modern tools can do dynamic discovery by quering to the consul.
+- if i dont have that , i have more trasitional middleware , here comes the second phase.
+-the second phase is network infrastructure automation.
+- the idea here is that i still dont want to be in the buisness of filing aa tciket and manulally updating stuff  and managing low level ips.
+
+-i want my app A to talk to the databse , i dont really care what are the ips of A or the databse  , they are gonan scale up and down and things might move around...etc , i wnat to be reactive to that.
+
+-so in this case what we do is we actually leverage something called "terraform" .
+-so what we do is we author a snippet of terraform configuration  (IAC: infrastructure as code) , and what we have is that our input it's the set of service A nodes as well as the databse nodes.
+-and we are gonna configure as part of our terraform what are the rules for ex to configure our terraform to a firewall
+
+ -and tehn the way this works, it's some sort of a publisher/subscriber relationship .
+ -when these services update  like new instance A comes up it registers to teh console like sort of "publishing" the fact that there is a new instance of A .
+
+-now this terraform snippet, we configure this using what we call "the terraform consul sync agent"  , it's gonna now look and say great im subscribed to the changes in service A  or to service databse.
+
+-so the moment this gets published , that tehers a new instance of an app it triggers the subscription.
+
+-all teh new ips of the instances get fed as inputs to the terraform configuration which then gets executed and automatically updated in the devices.
+
+-so all this does is some sort of creating a clean seperation for us, as app devs we deploy the app, the app publishes and registers to consoles as they create new isntances and then we can drive the downstream subscription depending on the integrity of the middleware with consul , it might be through consul directly if it is consul aware or through our terraform agnet if it is not.
+
+-consul here is the central broker.
+-for others , as long as they have "terraform provider"  and have an API , we can fit them to this model.
+
+ 
+ 
+   
 
 
 

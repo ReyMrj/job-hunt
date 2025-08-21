@@ -3,7 +3,9 @@
 
 -useful resources and youtube channels:
 
-      - HashiCorp channel: https://www.youtube.com/@HashiCorp/search?query=infrastructure%20automation
+      - HashiCorp channel: https://www.youtube.com/@HashiCorp/search?query=infrastructure%20automation  (a paradise of videos on infrastructure automation)
+      
+      
       
       
       
