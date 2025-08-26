@@ -2,6 +2,64 @@
                              --interview preparation:--
 
 
+           -  what are the core concepts of oop?
+                -we have encapsuation first , it bundles data and methods together , how? it's like a network device class containig attributes like hostname + methods to configure it like configure() this keeps the code modular and reusable.
+                -we have inheritance, for example a base class can be extendded into child classes , lets say the base class is device and child classes are router , switches and stuff. to reduce duplication
+                -we have polymorphism  , this  means same interface but different implementation , u can have a method for example deploy_config()  that pushes  configs via NETCONF on a router but via a REST API on a firewall.
+                -abstraction , hides low level details .
+                -in netdevops , oop helps build reusable libraries for network  automation instead of chunks of scripts.
+                
+                
+                
+                
+           -Infrastructure as code? (IAC) 
+                -okay , IAC treats network and its infrastructure  configurations as code , instead of manually applying configs you  define them in "version-controlled  files".
+                -it's repeatable , same config can be applied in test,staging and prod.
+                -it's tracebale ,every change is in git with history and approvals.
+                -it's scalable , pushes config to 1000 routers the same way as 1 router.
+                -what tools? terraform ,ansible..
+                
+                
+                
+                
+           -terraform vs ansible?
+                -terraform is declarative, state driven , u say what the newtrok should look like , for ex : 50 subnets 10 BGP peers ..etc , terraform ensures the network matches that state. best for cloud networks ,vpns,vpcs...etc
+                
+                - ansible is procedural ,task driven , u say how to get ther step by step , it's good for pushing configs , sofwtare updates..etc
+                -they are often combined , terraform builds the infra,ansible configures it.
+                
+           -networking protocols : 
+                 -OSPF(interior gateway protocol): used inside a single org , great for entreprise LAN/WAN
+                 -BGP(exterior Gateway protocol):  used between organizations 
+                 -in netdevops knowing both is crucial , ospf automates internal cloud networking , BGP connects clouds,ISPs ..etc
                  
-
+                 
+                 
+            -containers in netdevops?
+                  -why containers? why not just run a script on a vm?
+                  -containers are faster and portable also configs and dependencies  are defined in dockerfiles 
+                  -for example running ansible inside a container avoids dependency hell (python versions,libs..etc)
+                  
+                  
+             -git in  netdevops?
+                   -ci/cd pipelines , automatically lint configs (syntax checks) ,run test labs(for ex using containerized routers) and deploy to prod.
+                   
+                            
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                 
+                    
+                
+                   
 
